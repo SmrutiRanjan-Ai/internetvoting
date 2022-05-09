@@ -58,11 +58,11 @@ class Voter(user):
         vote = self.current_vote
         ballot = vote['ballot']
         ballot_str=self.ballot_to_string(ballot)
-        vote_str='token:'+str(vote['token'])+'index:'+str(vote['index'])+'ballot:'+str(ballot_str)
+        vote_str=str(vote['token'])+':'+str(vote['index'])+':'+str(ballot_str)
         list_counters = global_file.list_of_counters[self.region]
         parts = self.str_split(len(list_counters),vote_str)
         for i in range(len(list_counters)):
-            list_counters[i].receive_vote_parts(vote['token'],i,parts[i])
+            list_counters[i].receive_vote_parts(vote['token'],vote['index'],i+1,parts[i])
 
 
     def ballot_to_string(self,ballot):
