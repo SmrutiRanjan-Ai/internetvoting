@@ -1,0 +1,12 @@
+list_of_voters=[]
+list_of_candidates=[]
+list_of_elections=[]
+list_of_registrars= []
+list_of_regions=[]
+registars_per_region={}
+counters= {}
+list_of_evaluators=[]
+list_of_organizers= {}
+list_of_ballot= {}
+n = 5  #N vote Counters
+k = 3  #K confirmation
