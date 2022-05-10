@@ -39,9 +39,11 @@ class Evaluator(user.User):
                 if vote_parts[0] == max_index:
                     votes.append(vote_parts)
             vote = ''
+            print("votes",votes)
             for part in votes:
                 vote+=part[2]
             self.serialized_votes[token]=vote
+            print("vote",vote)
 
 
     def finalize_votes(self):
@@ -66,22 +68,23 @@ class Evaluator(user.User):
         for token in self.finalized_votes:
             ballot = self.finalized_votes[token]
             candidate_id=''
-            for c in ballot:
-                if ballot[c]:
+            for c in ballot['data']:
+                if ballot['data'][c]:
                     candidate_id = c
             if candidate_id in self.results.keys():
                 self.results[candidate_id]+=1
             else:
                 self.results[candidate_id]=1
         max_value = max(self.results, key=self.results.get)
-        print(self.results)
+
         winner=None
         for candidate in self.candidates:
             if str(candidate.id) == max_value:
                 winner = candidate
                 break
 
-        print("Result is ",max_value,winner.alias,winner.id)
+        print("Result is ",self.results)
+        print("Result is ", max_value, winner)
 
     def __str__(self):
         return f"{self.alias}"

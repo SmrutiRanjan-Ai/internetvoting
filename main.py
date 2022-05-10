@@ -10,7 +10,7 @@ import evaluators
 import election
 import ballot
 
-voters_num=3
+voters_num=5
 region = 1
 
 registrar = registrars.Registrars(region)
@@ -39,7 +39,9 @@ for i in global_file.list_of_voters[region]:
 	print(i.id,i.alias)
 	i.vote()
 
-global_file.list_of_voters[region][1].vote()
+global_file.list_of_voters[region][0].vote()
+global_file.list_of_voters[region][0].vote()
+global_file.list_of_voters[region][0].vote()
 
 for i in global_file.list_of_counters[region]:
 	i.send_votes_evaluator()

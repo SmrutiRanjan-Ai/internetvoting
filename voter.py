@@ -50,7 +50,7 @@ class Voter(User):
         choice = int(input("Enter Choice Number from Above"))
         candidate = candidates[choice - 1]
         print(f"Option Chosen is {candidate.alias} - {candidate.id}")
-        if candidate in ballot['data'].keys():
+        if str(candidate.id) in ballot['data'].keys():
             ballot['data'][str(candidate.id)]=True
         num=0
         for i in ballot['data'].keys():
