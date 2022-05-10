@@ -29,7 +29,6 @@ class Evaluator(user.User):
     def construct_votes(self):
 
         for token in self.votes:
-            print("self votes",self.votes[token])
             max_index = 0
             for vote_parts in self.votes[token]:
                 print(vote_parts)
@@ -39,11 +38,10 @@ class Evaluator(user.User):
                 if vote_parts[0] == max_index:
                     votes.append(vote_parts)
             vote = ''
-            print("votes",votes)
             for part in votes:
                 vote+=part[2]
             self.serialized_votes[token]=vote
-            print("vote",vote)
+        print("vote",self.serialized_votes)
 
 
     def finalize_votes(self):
