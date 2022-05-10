@@ -2,7 +2,7 @@ import uuid
 import names
 import ecdsa
 
-class user():
+class User():
     def __init__(self):
         self.id = uuid.uuid4()
         self.alias = names.get_full_name()
