@@ -1,0 +1,26 @@
+import agent
+import global_file
+import blockchain as b
+blockchain=b.Blockchain()
+alice = agent.Agent("alice",blockchain,"issuer")
+bob = agent.Agent("bob",blockchain,"holder")
+faber = agent.Agent("faber",blockchain,"holder")
+
+alice.create_invitation('issuer')
+alice.send_invitation(alice.invitation,"bob")
+bob.update_data("bob",21)
+bob.send_attributes('alice')
+alice.check_attributes()
+alice.send_credentials()
+bob.present_claim('faber')
+blockchain.query_blockchain()
+global_file.query_diddoc('bob')
+bob1 = agent.Agent("bob1",blockchain,"holder")
+alice.send_invitation(alice.invitation,"bob1")
+bob1.update_data("bob1",21)
+bob1.send_attributes('alice')
+alice.check_attributes()
+alice.send_credentials()
+bob1.present_claim_data('faber','bob1',21)
+alice1 = agent.Agent("alice1",blockchain,"issuer")
+blockchain.query_blockchain()
