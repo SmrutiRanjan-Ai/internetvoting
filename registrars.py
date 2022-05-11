@@ -1,11 +1,12 @@
 import uuid
-
+import agent
 import global_file
 import user
 
 class Registrars(user.User):
-    def __init__(self,region):
+    def __init__(self,region,blockchain):
         super().__init__()
+        self.agent = agent.Agent("registrar",blockchain,"holder")
         self.region = region
         self.voter_data={}
         global_file.list_of_registrars[self.region] = self

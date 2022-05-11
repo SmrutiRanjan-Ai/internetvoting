@@ -2,10 +2,11 @@ import uuid
 import json
 import global_file
 from user import User
+import agent
 class Voter(User):
-    def __init__(self, region):
+    def __init__(self, region,blockchain):
         super().__init__()
-        self.agent = None #agent.Agent()
+        self.agent = agent.Agent(f"{self.alias}",blockchain,"holder")
         self.wallet = {}
         self.ballots = [] # token:ballot
         self.voting_status = {}
@@ -15,6 +16,7 @@ class Voter(User):
         self.signed_data = None
         self.current_vote = None
         self.ballot = None
+        self.did_status = None
         if region not in global_file.list_of_voters.keys():
             global_file.list_of_voters[region]=[self]
         else:
@@ -25,7 +27,9 @@ class Voter(User):
     def send_id_registrar(self):
         data = {"id":self.id,"region":self.region}
         status,credential = global_file.list_of_registrars[self.region].receive_id(data)
+        status_did = self.agent.present_claim("registrar")
         self.registration_status = status
+        self.did_status = status_did
         self.voting_credential = credential
 
 
@@ -47,11 +51,11 @@ class Voter(User):
         candidates = global_file.list_of_candidates[self.region]
         for i in range(len(candidates)):
             print(f"Option - ({i+1}) - {candidates[i].alias} - {candidates[i].id}")
-        choice = int(input("Enter Choice Number from Above"))
+        choice = int(input(f"Enter Choice for {self.alias} a Number from Above"))
         candidate = candidates[choice - 1]
         print(f"Option Chosen is {candidate.alias} - {candidate.id}")
         if str(candidate.id) in ballot['data'].keys():
-            ballot['data'][str(candidate.id)]=True
+            ballot['data'][str(candidate.id)]=str(self.id)
         num=0
         for i in ballot['data'].keys():
             if ballot['data'][i]:
@@ -65,7 +69,7 @@ class Voter(User):
         ballot['index']=token['index']
         self.ballots.append(ballot)
         vote={'token':token['token'],'index': token['index'],'ballot':self.ballot}
-        self.current_vote =vote
+        self.current_vote = vote
         self.split_vote()
 
     def split_vote(self):

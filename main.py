@@ -1,3 +1,5 @@
+
+
 import counters
 import organizers
 import user
@@ -9,11 +11,15 @@ import global_file
 import evaluators
 import election
 import ballot
-
+import blockchain
+import agent
 voters_num=5
 region = 1
-
-registrar = registrars.Registrars(region)
+blockchain=blockchain.Blockchain()
+issuer = agent.Agent("issuer",blockchain,"issuer")
+registrar_agent = agent.Agent("registrar",blockchain,"issuer")
+issuer.create_invitation('issuer')
+registrar = registrars.Registrars(region,blockchain)
 organizer = organizers.Organizer(region)
 
 
@@ -29,7 +35,13 @@ for i in range(counters_num):
 	c=counters.Counters(region)
 
 for _ in range(voters_num):
-	v=voter.Voter(region)
+	v=voter.Voter(region,blockchain)
+	issuer.send_invitation(issuer.invitation, f"{v.alias}")
+	v.agent.update_data(v.alias,18)
+	v.agent.send_attributes('issuer')
+	issuer.check_attributes()
+	issuer.send_credentials()
+	v.agent.present_claim('registrar')
 
 
 for i in global_file.list_of_voters[region]:
