@@ -14,6 +14,7 @@ class Evaluator(user.User):
         self.finalized_votes={}
         self.results={}
         self.candidates=candidates
+        self.results_buckets ={}
         for candidate in self.candidates:
             self.results[candidate.id]=0
         global_file.list_of_evaluators[self.region] = self
@@ -69,10 +70,13 @@ class Evaluator(user.User):
             for c in ballot['data']:
                 if ballot['data'][c]:
                     candidate_id = c
+                    break
             if candidate_id in self.results.keys():
                 self.results[candidate_id]+=1
+                self.results_buckets[candidate_id].append(ballot['data'][c])
             else:
                 self.results[candidate_id]=1
+                self.results_buckets[candidate_id]=[ballot['data'][c]]
         max_value = max(self.results, key=self.results.get)
 
         winner=None
@@ -82,6 +86,7 @@ class Evaluator(user.User):
                 break
 
         print("Result is ",self.results)
+        print("Result is ", self.results_buckets)
         print("Result is ", max_value, winner)
 
     def __str__(self):

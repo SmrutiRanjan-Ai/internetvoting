@@ -28,11 +28,13 @@ counters_num = 5
 
 for i in range(candidates_num):
 	c=candidate.Candidate(region)
+	print(c)
 candidates = global_file.list_of_candidates[region]
 evaluator = evaluators.Evaluator(region,candidates)
 ballot = ballot.Ballot(region,candidates)
 for i in range(counters_num):
 	c=counters.Counters(region)
+	print(c)
 
 for _ in range(voters_num):
 	v=voter.Voter(region,blockchain)
